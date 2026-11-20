@@ -2,7 +2,7 @@
 
 Simulador web de combates por turnos al estilo Pokémon, hecho con **FastAPI**, **Jinja2** y **pytest**.
 
-**Autor:** Jorge Herrera · **Curso:** Desarrollo de Aplicaciones Web III · **Fecha:** 20 de noviembre de 2026
+**Autor:** Jorge Herrera · **Curso:** Desarrollo de Aplicaciones Web II · **Entrega:** Parcial III · **Fecha:** 20 de noviembre de 2026
 
 > Proyecto académico sin fines comerciales. Pokémon y sus nombres pertenecen a Nintendo, Game Freak y The Pokémon Company.
 
