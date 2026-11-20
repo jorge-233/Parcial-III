@@ -2,7 +2,7 @@
 
 Simulador web de combates por turnos al estilo Pokémon, hecho con **FastAPI**, **Jinja2** y **pytest**.
 
-**Autor:** [COMPLETAR] · **Curso:** [COMPLETAR] · **Fecha:** [COMPLETAR]
+**Autor:** Jorge Herrera · **Curso:** Desarrollo de Aplicaciones Web III · **Fecha:** 20 de noviembre de 2026
 
 > Proyecto académico sin fines comerciales. Pokémon y sus nombres pertenecen a Nintendo, Game Freak y The Pokémon Company.
 
@@ -229,20 +229,28 @@ Las pruebas con azar usan una semilla fija o un generador con valor fijo, para q
 ![Índice de movimientos](docs/capturas/movimientos.png)
 ![Ficha de Mewtwo](docs/capturas/ficha.png)
 
-**Ejecución de las pruebas con pytest:**
+**Ejecución de las pruebas con pytest** (`pytest -v`): inicio de la ejecución, con las 88 pruebas recolectadas, y resultado final, `88 passed`.
 
-![Pruebas con pytest](docs/capturas/pytest.png)
+![Inicio de pytest](docs/capturas/pytest_inicio.png)
+![Resultado de pytest](docs/capturas/pytest_resultado.png)
 
 ## 8. Conclusiones
 
-[COMPLETAR / REVISAR con tus palabras]
+**¿Qué fue lo más difícil?**
 
-- **Separar la lógica de la web** fue la decisión más útil: como `app/game/` no depende de FastAPI, casi todas las reglas se probaron directamente con pytest, sin levantar el servidor. FastAPI quedó como una capa delgada que valida, llama al motor y devuelve plantillas.
-- **El azar era un problema para las pruebas.** Se resolvió pasando el generador aleatorio como parámetro: con una semilla fija el combate es repetible y se pueden comprobar resultados exactos.
-- **Mostrar el turno en orden** fue el mayor desafío de la interfaz. Al principio todo el turno aparecía de golpe. La solución fue que el motor registrara cada acción como un paso con el estado de la escena, y que la página los reprodujera uno por uno, sin necesidad de AJAX.
-- **Integración FastAPI–Jinja2–pytest:** el `TestClient` permitió comprobar las rutas igual que un navegador (códigos 200, 303, 400, 404 y 422, cookies y contenido HTML).
-- **Limitaciones:** los combates viven en memoria, cada Pokémon tiene un solo tipo y algunos movimientos están simplificados respecto al juego original.
-- **Mejoras posibles:** dos tipos por Pokémon, clima, habilidades y guardar los combates en una base de datos.
+Una de las partes más difíciles fue conseguir imágenes 3D de los Pokémon y darles una animación suave para que no se vieran como una imagen fija, y lo mismo pasó con los ataques: encontrar la forma de animarlos me costó bastante. Además, al principio los turnos pasaban demasiado rápido. Al lanzar un ataque, todo ocurría en un instante, la vida de los dos Pokémon bajaba de golpe y solo podía saber qué había pasado leyendo el historial de abajo. También tuve un error con el mensaje de derrota: en una jugada decisiva, con los dos Pokémon a punto de caer y sin saber cuál era más rápido, la aplicación ya conocía el resultado y mostraba el mensaje de derrota antes de que terminara la animación del turno, lo cual era frustrante. Por último, había cosas que dependían del azar, como los golpes críticos o la precisión de algunos ataques (Ventisca, por ejemplo, tiene 70 %), y eso hacía difícil comprobar con pruebas que los resultados fueran correctos.
+
+**¿Cómo se solucionó?**
+
+Para los turnos, hice que cada cosa que ocurre se guarde como un paso y que la página los muestre uno por uno, como en los juegos originales: aparece un mensaje como «Charizard usó Lanzallamas», la barra de vida del rival baja poco a poco, y después el otro Pokémon hace lo mismo dentro del mismo turno, atacando primero el que tenga más velocidad. Con el mensaje de derrota, el servidor sigue calculando todo el turno de inmediato, pero ahora el resultado se le muestra al usuario después: el cartel de victoria o derrota solo aparece cuando terminan las animaciones de los dos Pokémon. Y para el azar de los críticos y la precisión, en las pruebas usé una semilla fija, así el resultado siempre es el mismo y se puede comprobar.
+
+**¿Qué aprendí?**
+
+De FastAPI aprendí cómo se crean rutas, cómo se reciben los datos de los formularios y cómo se validan los datos incorrectos; por ejemplo, si llega un texto donde se espera un número, la aplicación responde con el error 422. De Jinja2 aprendí a usar una plantilla base, `base.html`, que se reutiliza en todas las páginas, y a mostrar datos que cambian, como la vida o los movimientos. De pytest ya tenía algo de conocimiento por un trabajo anterior de esta misma materia, pero aquí vi que las pruebas ayudan a encontrar errores y que con `TestClient` se pueden probar las rutas sin abrir el navegador. Al final pasaron las 88 pruebas.
+
+**¿Qué mejoraría con más tiempo?**
+
+Tuve solo 3 o 4 días para hacer el proyecto, así que quedaron cosas por mejorar. Me gustaría darle una animación propia a cada ataque, como Lanzallamas, Ventisca, Garra Dragón o Látigo Cepa, y usar modelos 3D reales de los Pokémon en vez de imágenes en 3D. También quisiera añadir más entrenadores rivales y ampliar la Pokédex: ahora tiene 22 Pokémon, elegidos entre mis favoritos y algunos de los más conocidos, y me gustaría llegar a unos 100. Además, agregaría una base de datos y sonidos, para que se parezca todavía más a los juegos originales.
 
 ## Créditos
 
