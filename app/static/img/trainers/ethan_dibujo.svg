@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160" role="img" aria-label="Dibujo de respaldo del jugador">
+  <!-- Dibujo sencillo de respaldo: se usa solo si no existe ethan.png -->
+  <ellipse cx="60" cy="154" rx="34" ry="5" fill="#0002"/>
+  <!-- piernas y zapatos -->
+  <rect x="44" y="112" width="13" height="34" rx="5" fill="#2f4b8a"/>
+  <rect x="63" y="112" width="13" height="34" rx="5" fill="#2f4b8a"/>
+  <rect x="40" y="142" width="19" height="9" rx="4" fill="#d9363e"/>
+  <rect x="61" y="142" width="19" height="9" rx="4" fill="#d9363e"/>
+  <!-- chaqueta -->
+  <path d="M34 72 q26 -12 52 0 l4 46 h-60 z" fill="#d9363e"/>
+  <path d="M60 66 v52" stroke="#1f2328" stroke-width="3"/>
+  <rect x="30" y="110" width="60" height="8" rx="3" fill="#1f2328"/>
+  <!-- brazos -->
+  <rect x="22" y="74" width="13" height="36" rx="6" fill="#d9363e"/>
+  <rect x="85" y="74" width="13" height="36" rx="6" fill="#d9363e"/>
+  <circle cx="28" cy="113" r="6" fill="#f3c9a0"/>
+  <circle cx="92" cy="113" r="6" fill="#f3c9a0"/>
+  <!-- cara -->
+  <circle cx="60" cy="46" r="24" fill="#f3c9a0"/>
+  <path d="M38 44 q-2 -14 8 -18 M82 44 q2 -14 -8 -18" stroke="#3b2a1e" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <circle cx="51" cy="49" r="3" fill="#1f2328"/>
+  <circle cx="69" cy="49" r="3" fill="#1f2328"/>
+  <path d="M54 59 q6 4 12 0" stroke="#a0522d" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- gorra negra con linea amarilla -->
+  <path d="M34 38 q26 -30 52 0 z" fill="#1f2328"/>
+  <path d="M36 33 q24 -20 48 0" stroke="#f5c518" stroke-width="4" fill="none"/>
+  <path d="M60 34 q-30 2 -40 10 q18 -4 40 -4 z" fill="#1f2328"/>
+</svg>

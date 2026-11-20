@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block titulo %}Pokédex · PokéBattle{% endblock %}
+{% block contenido %}
+<section class="hero">
+  <div class="hero-texto panel-base">
+    <span class="eyebrow">Simulador de combates por turnos</span>
+    <h1>PokéBattle</h1>
+    <p>Arma un equipo de 1 a {{ max_equipo }} Pokémon y enfréntate a un entrenador al azar con la misma cantidad.
+       Tipos, estados, PP y críticos funcionan como en los juegos.</p>
+    <div class="cifras">
+      <div><strong class="num">{{ especies | length }}</strong><span>Pokémon</span></div>
+      <div><strong class="num">{{ tipos | length }}</strong><span>Tipos</span></div>
+      <div><strong class="num">{{ n_movimientos }}</strong><span>Movimientos</span></div>
+      <div><strong class="num">{{ entrenadores | length }}</strong><span>Rivales</span></div>
+    </div>
+  </div>
+  <aside class="hero-lado panel-base">
+    <div>
+      <h3>Tu entrenador</h3>
+      <div class="jugador-tarjeta">
+        <div class="retrato">
+          <img src="/static/{{ jugador.sprite }}" alt="{{ jugador.nombre }}"
+               onerror="this.onerror=null; this.src='/static/{{ jugador.dibujo }}'">
+        </div>
+        <div>
+          <strong>{{ jugador.nombre }}</strong><br>
+          <span class="muted">{{ jugador.descripcion }}</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>Posibles rivales</h3>
+      <div class="rivales">
+        {% for e in entrenadores %}
+        <div class="rival-mini" title="{{ e.nombre }} · {{ e.relacion }}">
+          <div class="avatar" style="background: {{ e.color }}"><span>{{ e.nombre[0] }}</span>
+            <img src="/static/{{ e.sprite }}" alt="{{ e.nombre }}" onerror="this.remove()"></div>
+          {{ e.nombre }}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+</section>
+
+{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+
+<section id="pokedex">
+  <div class="encabezado-pagina">
+    <div>
+      <h2 style="margin:0">Pokédex</h2>
+      <p>Toca un Pokémon para ver su ficha o añádelo a tu equipo.</p>
+    </div>
+  </div>
+
+  <div class="barra-herramientas">
+    <label class="buscador">
+      <span hidden>Buscar Pokémon</span>
+      <input type="search" id="buscar" placeholder="Buscar por nombre o número" autocomplete="off">
+    </label>
+    <div class="chips" id="filtro-tipos">
+      <button type="button" class="chip-filtro todos activo" data-tipo="">Todos</button>
+      {% for t in tipos %}
+      <button type="button" class="chip-filtro" data-tipo="{{ t }}" style="--tc: var(--t-{{ t }})">{{ t | tipo }}</button>
+      {% endfor %}
+    </div>
+    <span class="contador-resultados" id="resultados">{{ especies | length }} Pokémon</span>
+  </div>
+
+  <form method="post" action="/batalla/nueva" id="form-equipo">
+    <div class="rejilla">
+      {% for e in especies %}
+      <article class="pk-card" data-nombre="{{ e.nombre | lower }}" data-num="{{ e.id }}" data-tipos="{{ e.tipos | join(' ') }}"
+               style="--tc: var(--t-{{ e.tipos[0] }})">
+        <input type="checkbox" class="pk-check" id="sel-{{ e.slug }}" name="equipo" value="{{ e.slug }}"
+               data-sprite="/static/{{ e.sprite }}" data-nombre="{{ e.nombre }}" {{ 'checked' if e.slug in seleccion }}>
+        <a class="pk-media" href="/pokemon/{{ e.slug }}" aria-label="Ficha de {{ e.nombre }}">
+          <span class="pk-num">#{{ '%03d' | format(e.id) }}</span>
+          <span class="pk-marca" aria-hidden="true">✓</span>
+          <img src="/static/{{ e.sprite }}" alt="{{ e.nombre }}" loading="lazy" onerror="this.style.visibility='hidden'">
+        </a>
+        <div class="pk-cuerpo">
+          <h3>{{ e.nombre }}</h3>
+          <div class="tipos">{% for t in e.tipos %}<span class="tipo tipo-{{ t }}">{{ t | tipo }}</span>{% endfor %}</div>
+          <div class="pk-total"><span>Total base</span><strong class="num">{{ e.stats_base.values() | sum }}</strong></div>
+        </div>
+        <div class="pk-acciones">
+          <a href="/pokemon/{{ e.slug }}">Ficha</a>
+          <label for="sel-{{ e.slug }}"><span class="anadir">Añadir</span><span class="quitar">Quitar</span></label>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="sin-resultados" id="sin-resultados" hidden>No hay Pokémon que coincidan con la búsqueda.</p>
+
+    <div class="bandeja" role="region" aria-label="Tu equipo">
+      <div class="bandeja-titulo">
+        <strong>Tu equipo · <span id="contador">0</span>/{{ max_equipo }}</strong>
+        <span>El rival tendrá los mismos</span>
+      </div>
+      <div class="ranuras" id="ranuras">
+        {% for _ in range(max_equipo) %}<span class="ranura"></span>{% endfor %}
+      </div>
+      <button type="submit" id="btn-combatir" class="btn grande">⚔️ ¡Combatir!</button>
+    </div>
+  </form>
+</section>
+
+<script>
+  (function () {
+    const cajas = Array.from(document.querySelectorAll('.pk-check'));
+    const tarjetas = Array.from(document.querySelectorAll('.pk-card'));
+    const contador = document.getElementById('contador');
+    const boton = document.getElementById('btn-combatir');
+    const ranuras = Array.from(document.querySelectorAll('#ranuras .ranura'));
+    const maximo = {{ max_equipo }};
+    let orden = cajas.filter(c => c.checked);     // orden en que se eligieron
+
+    function actualizar() {
+      orden = orden.filter(c => c.checked).concat(cajas.filter(c => c.checked && !orden.includes(c)));
+      contador.textContent = orden.length;
+      boton.disabled = orden.length === 0;
+      cajas.forEach(c => { if (!c.checked) c.disabled = orden.length >= maximo; });
+      ranuras.forEach((r, i) => {
+        const c = orden[i];
+        r.classList.toggle('llena', !!c);
+        r.innerHTML = c ? `<img src="${c.dataset.sprite}" alt="${c.dataset.nombre}" title="${c.dataset.nombre}">` : '';
+      });
+    }
+    cajas.forEach(c => c.addEventListener('change', actualizar));
+    actualizar();
+
+    // Busqueda y filtro por tipo
+    const buscar = document.getElementById('buscar');
+    const resultados = document.getElementById('resultados');
+    const vacio = document.getElementById('sin-resultados');
+    let tipo = '';
+    function filtrar() {
+      const q = buscar.value.trim().toLowerCase().replace(/^#/, '');
+      let n = 0;
+      tarjetas.forEach(t => {
+        const ok = (!q || t.dataset.nombre.includes(q) || t.dataset.num.padStart(3, '0').includes(q))
+                && (!tipo || t.dataset.tipos.split(' ').includes(tipo));
+        t.hidden = !ok;
+        if (ok) n++;
+      });
+      resultados.textContent = n + ' Pokémon';
+      vacio.hidden = n > 0;
+    }
+    buscar.addEventListener('input', filtrar);
+    document.querySelectorAll('#filtro-tipos .chip-filtro').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#filtro-tipos .chip-filtro').forEach(x => x.classList.toggle('activo', x === b));
+      tipo = b.dataset.tipo;
+      filtrar();
+    }));
+  })();
+</script>
+{% endblock %}

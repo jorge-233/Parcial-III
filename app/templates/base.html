@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}PokéBattle{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/static/css/estilo.css?v=9">
+  {% block cabecera %}{% endblock %}
+</head>
+<body>
+  <header class="barra-superior">
+    <div class="barra-interior">
+      <a href="/" class="logo"><span class="logo-bola" aria-hidden="true"></span>PokéBattle</a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a href="/" class="{{ 'activo' if request.url.path == '/' or request.url.path.startswith('/pokemon') }}">Pokédex</a>
+        <a href="/movimientos" class="{{ 'activo' if request.url.path == '/movimientos' }}">Movimientos</a>
+      </nav>
+      {% set en_curso = combate_en_curso(request) %}
+      {% set en_su_pagina = en_curso and request.url.path == '/batalla/' ~ en_curso.id %}
+      {% if en_curso and not en_su_pagina %}
+      <a href="/batalla/{{ en_curso.id }}" class="btn en-combate cabecera-cta">Volver al combate</a>
+      {% else %}
+      <a href="/#pokedex" class="btn secundario cabecera-cta">Nuevo combate</a>
+      {% endif %}
+    </div>
+  </header>
+  <main>
+    {% if en_curso and not en_su_pagina %}
+    <div class="aviso-combate" role="status">
+      <span><strong>Tienes un combate en curso contra {{ en_curso.entrenador.nombre }}</strong> (turno {{ en_curso.turno }}).
+        ¿Quieres volver donde lo dejaste o abandonarlo?</span>
+      <div class="aviso-acciones">
+        <form method="post" action="/batalla/{{ en_curso.id }}/abandonar"
+              onsubmit="return confirm('¿Abandonar el combate contra {{ en_curso.entrenador.nombre }}? No se podrá recuperar.')">
+          <input type="hidden" name="volver" value="{{ request.url.path }}">
+          <button type="submit" class="btn fantasma">Abandonar</button>
+        </form>
+        <a class="btn" href="/batalla/{{ en_curso.id }}">⚔️ Volver al combate</a>
+      </div>
+    </div>
+    {% endif %}
+    {% block contenido %}{% endblock %}
+  </main>
+  <footer class="pie-pagina">
+    PokéBattle · proyecto académico sin fines comerciales. Pokémon y sus nombres pertenecen a Nintendo, Game Freak y The Pokémon Company.
+    Datos e imágenes: PokéAPI.
+  </footer>
+</body>
+</html>

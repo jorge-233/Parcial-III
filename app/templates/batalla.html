@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block titulo %}Combate vs {{ b.entrenador.nombre }} · PokéBattle{% endblock %}
+{% block cabecera %}<link rel="stylesheet" href="/static/css/batalla.css?v=6">{% endblock %}
+{% block contenido %}
+
+{% set ETIQUETA_ESTADO = {'quemadura': 'QUE', 'paralisis': 'PAR', 'sueno': 'DOR', 'congelado': 'CON'} %}
+{% set ETIQUETA_STAT = {'ataque': 'Atq', 'defensa': 'Def', 'atq_esp': 'AtqEsp', 'def_esp': 'DefEsp',
+                        'velocidad': 'Vel', 'precision': 'Prec', 'evasion': 'Eva'} %}
+
+{% macro cuadro_info(f, lado) %}
+  {% set pct = ((f.hp / f.hp_max) * 100) | round(1) %}
+  {% set color = 'verde' if pct > 50 else ('amarillo' if pct > 20 else 'rojo') %}
+  <div class="cuadro-info {{ lado }} {{ 'oculto' if not f.en_campo }}" id="info-{{ lado }}">
+    <div class="fila">
+      <strong class="nombre">{{ f.nombre }}</strong>
+      <span class="nivel">Nv.50</span>
+    </div>
+    <div class="fila">
+      <span class="estado-etq {{ 'estado-' ~ f.estado if f.estado }}" {{ 'hidden' if not f.estado }}>{{ ETIQUETA_ESTADO.get(f.estado, '') }}</span>
+      <span class="ps-etq">PS</span>
+      <div class="barra-hp"><span class="relleno {{ color }}" style="width: {{ pct }}%"></span></div>
+    </div>
+    {% if lado == 'jugador' %}
+    <div class="ps-num"><span class="hp">{{ f.hp }}</span> / <span class="hp-max">{{ f.hp_max }}</span></div>
+    {% endif %}
+    <div class="pie">
+      <span class="bolas">{% for x in f.equipo %}<span class="bola {{ 'caida' if x.debilitado }}"></span>{% endfor %}</span>
+      <span class="etapas">{% for stat, valor in f.etapas.items() %}<span class="chip">{{ ETIQUETA_STAT[stat] }} {{ '%+d' | format(valor) }}</span>{% endfor %}</span>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro campo(f, lado) %}
+  <div class="campo {{ lado }}">
+    <div class="plataforma"></div>
+    <div class="pokemon {{ 'oculto' if not f.en_campo }} {{ 'caido' if f.debilitado }}" id="poke-{{ lado }}">
+      <div class="cuerpo">
+        <div class="tinte {{ 'estado-' ~ f.estado if f.estado }}">
+          <img class="sprite" src="/static/{{ f.sprite }}" alt="{{ f.nombre }}" data-slug="{{ f.slug }}"
+               onerror="this.style.visibility='hidden'">
+        </div>
+      </div>
+      <div class="capa-estado {{ 'estado-' ~ f.estado if f.estado }}" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+    <div class="efectos" id="efectos-{{ lado }}" aria-hidden="true"></div>
+  </div>
+{% endmacro %}
+
+<section class="combate" id="combate" data-terminada="{{ 'si' if b.terminada else 'no' }}">
+  <div class="cabecera-combate">
+    <div class="avatar mini" style="background: {{ b.entrenador.color }}"><span>{{ b.entrenador.nombre[0] }}</span>
+      <img src="/static/{{ b.entrenador.sprite }}" alt="" onerror="this.remove()"></div>
+    <div><strong>{{ b.entrenador.nombre }}</strong> <small>· {{ b.entrenador.relacion }}</small><br>
+      <small>Turno {{ b.turno }}</small></div>
+  </div>
+
+  <div class="escena" id="escena">
+    <div class="entrenador-campo rival oculto" id="ent-rival" aria-hidden="true">
+      <div class="avatar grande" style="background: {{ b.entrenador.color }}"><span>{{ b.entrenador.nombre[0] }}</span>
+        <img src="/static/{{ b.entrenador.sprite }}" alt="" onerror="this.remove()"></div>
+    </div>
+    <div class="entrenador-campo jugador oculto" id="ent-jugador" aria-hidden="true">
+      <img src="/static/{{ jugador.sprite }}" alt=""
+           onerror="this.onerror=null; this.src='/static/{{ jugador.dibujo }}'">
+    </div>
+
+    {{ cuadro_info(escena.rival, 'rival') }}
+    {{ campo(escena.rival, 'rival') }}
+    {{ campo(escena.jugador, 'jugador') }}
+    {{ cuadro_info(escena.jugador, 'jugador') }}
+  </div>
+
+  <div class="cuadro-texto" id="cuadro-texto" title="Haz clic para avanzar más rápido">
+    <p id="texto" aria-live="polite">{{ '' if reproduccion else (b.ultimo[-1] if b.ultimo else '') }}</p>
+    <span class="indicador" aria-hidden="true">▼</span>
+  </div>
+
+  <div class="menu" id="menu">
+    {% if b.terminada %}
+      {% set gano = b.ganador == 'jugador' %}
+      <div class="cartel {{ 'victoria' if gano else 'derrota' }}" id="cartel">
+        <div class="avatar grande" style="background: {{ b.entrenador.color }}"><span>{{ b.entrenador.nombre[0] }}</span>
+          <img src="/static/{{ b.entrenador.sprite }}" alt="{{ b.entrenador.nombre }}" onerror="this.remove()"></div>
+        <div>
+          <h2>{{ '🏆 ¡Victoria!' if gano else '💔 Derrota' }}</h2>
+          <p>{{ 'Derrotaste a ' ~ b.entrenador.nombre ~ '.' if gano else b.entrenador.nombre ~ ' te ha ganado esta vez.' }}</p>
+          <p class="cita">{{ b.entrenador.nombre }}: «{{ b.entrenador.victoria if gano else b.entrenador.derrota }}»</p>
+          <div class="acciones">
+            <form method="post" action="/batalla/{{ b.id }}/revancha"><button type="submit" class="btn">🔁 Otro combate con el mismo equipo</button></form>
+            <a class="btn secundario" href="/">Cambiar de equipo</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      {% if not b.debe_cambiar %}
+      <div class="menu-principal" id="menu-principal" hidden>
+        <p>¿Qué hará <strong>{{ escena.jugador.nombre }}</strong>?</p>
+        <div class="opciones">
+          <button type="button" class="opcion luchar" data-panel="panel-movs">Luchar</button>
+          <button type="button" class="opcion equipo" data-panel="panel-cambio"
+                  {{ 'disabled' if b.jugador.disponibles() | length < 2 }}>Pokémon</button>
+        </div>
+      </div>
+
+      <form method="post" action="/batalla/{{ b.id }}/mover" class="panel panel-movs" id="panel-movs">
+        {% set activo = b.jugador.pokemon %}
+        <h3>Movimientos <button type="button" class="ayuda" data-abrir="dialogo-movs">¿Qué hace cada uno?</button></h3>
+        {% if activo.sin_pp %}<p class="aviso">¡A {{ escena.jugador.nombre }} no le quedan PP! Usará Forcejeo.</p>{% endif %}
+        <div class="movimientos">
+          {% for m in activo.movimientos %}
+          {% set pp = activo.pp[loop.index0] %}
+          <button type="submit" name="indice" value="{{ loop.index0 }}" class="mov tipo-{{ m.tipo }}"
+                  title="{{ m | describir }}" {{ 'disabled' if pp == 0 and not activo.sin_pp }}>
+            <strong>{{ m.nombre }}</strong>
+            <small>{{ m.tipo | tipo }} · {% if m.poder %}Poder {{ m.poder }}{% else %}Estado{% endif %}{% if m.precision %} · Prec. {{ m.precision }}%{% endif %}</small>
+            <span class="pp {{ 'agotado' if pp == 0 else ('poco' if pp is not none and pp * 4 <= m.pp else '') }}">PP {{ pp }}/{{ m.pp }}</span>
+          </button>
+          {% endfor %}
+        </div>
+        <button type="button" class="atras" hidden>← Atrás</button>
+      </form>
+      {% endif %}
+
+      {% if b.jugador.equipo | length > 1 %}
+      <form method="post" action="/batalla/{{ b.id }}/cambiar" class="panel panel-cambio {{ 'obligatorio' if b.debe_cambiar }}" id="panel-cambio">
+        <h3>{{ 'Elige tu siguiente Pokémon' if b.debe_cambiar else 'Cambiar de Pokémon (gasta tu turno)' }}</h3>
+        <div class="cambios">
+          {% for x in b.jugador.equipo %}{% if loop.index0 != b.jugador.activo %}
+          <button type="submit" name="indice" value="{{ loop.index0 }}" {{ 'disabled' if x.debilitado }}>
+            <img src="/static/{{ x.especie.sprite }}" alt="" onerror="this.style.visibility='hidden'">
+            <span>{{ x.nombre }}<br><small>{{ x.hp }} / {{ x.hp_max }} PS{{ ' · debilitado' if x.debilitado }}</small></span>
+          </button>
+          {% endif %}{% endfor %}
+        </div>
+        {% if not b.debe_cambiar %}<button type="button" class="atras" hidden>← Atrás</button>{% endif %}
+      </form>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <details class="historial">
+    <summary>Historial del combate</summary>
+    {% for grupo in (b.historial | groupby('turno')) | reverse %}{% if loop.index <= 40 %}
+      <h4>{{ 'Presentación' if grupo.grouper == 0 else 'Turno ' ~ grupo.grouper }}</h4>
+      {% for m in grupo.list %}<p>{{ m.texto }}</p>{% endfor %}
+    {% endif %}{% endfor %}
+  </details>
+</section>
+
+<dialog class="dialogo" id="dialogo-movs" aria-labelledby="titulo-dialogo-movs">
+  <div class="dialogo-cabecera">
+    <h2 id="titulo-dialogo-movs">Movimientos de tu equipo</h2>
+    <button type="button" class="dialogo-cerrar" data-cerrar aria-label="Cerrar">✕</button>
+  </div>
+  <div class="dialogo-cuerpo">
+    {% for x in b.jugador.equipo %}
+    <section class="dialogo-pokemon {{ 'es-activo' if loop.index0 == b.jugador.activo }}">
+      <header>
+        <img src="/static/{{ x.especie.sprite }}" alt="" onerror="this.style.visibility='hidden'">
+        <strong>{{ x.nombre }}</strong>
+        {% for t in x.tipos %}<span class="tipo tipo-{{ t }}">{{ t | tipo }}</span>{% endfor %}
+        <span class="muted num">{{ x.hp }}/{{ x.hp_max }} PS</span>
+        {% if loop.index0 == b.jugador.activo %}<span class="etiqueta-activo">En combate</span>{% endif %}
+      </header>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th>Movimiento</th><th>Tipo</th><th>Categoría</th><th class="n">Poder</th>
+                     <th class="n">Prec.</th><th class="n">PP</th><th>Efecto</th></tr></thead>
+          <tbody>
+            {% for m in x.movimientos %}
+            <tr>
+              <td><strong>{{ m.nombre }}</strong></td>
+              <td><span class="tipo tipo-{{ m.tipo }}">{{ m.tipo | tipo }}</span></td>
+              <td><span class="categoria cat-{{ m.categoria }}">{{ m.categoria | categoria }}</span></td>
+              <td class="n">{{ m.poder or "—" }}</td>
+              <td class="n">{{ (m.precision ~ " %") if m.precision else "—" }}</td>
+              <td class="n">{{ x.pp[loop.index0] }}/{{ m.pp }}</td>
+              <td class="efecto">{{ m | describir }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endfor %}
+  </div>
+  <div class="dialogo-pie">
+    <button type="button" class="btn" data-cerrar>Volver al combate</button>
+  </div>
+</dialog>
+
+<script id="datos-combate" type="application/json">{{ reproduccion | tojson }}</script>
+<script src="/static/js/batalla.js?v=6"></script>
+{% endblock %}

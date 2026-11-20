@@ -1,0 +1,265 @@
+/* Pantalla de combate: escena, cuadros de informacion, menu y animaciones */
+
+.combate { max-width: 860px; margin: 0 auto; }
+.cabecera-combate { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 10px 14px;
+  background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra-1); }
+.cabecera-combate small { color: var(--suave-texto); }
+.avatar.mini { width: 44px; height: 44px; font-size: 1.1rem; margin: 0; }
+.avatar.grande { width: 120px; height: 120px; font-size: 3rem; }
+
+/* ---------- Escena ---------- */
+.escena {
+  position: relative; overflow: hidden; aspect-ratio: 16 / 10; border-radius: var(--radio) var(--radio) 0 0;
+  border: 1px solid #0f172a; border-bottom: 0; user-select: none; cursor: pointer;
+  background:
+    radial-gradient(ellipse 60% 22% at 18% 47%, #9bd57a 0 98%, transparent 100%),
+    radial-gradient(ellipse 50% 18% at 80% 46%, #8ccb6c 0 98%, transparent 100%),
+    linear-gradient(#9fd8ff 0%, #d9f1ff 44%, #a9de86 44.2%, #86c964 72%, #6fb752 100%);
+}
+.escena::before {           /* nubes */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 9% 4% at 22% 14%, #fff 0 95%, transparent 100%),
+    radial-gradient(ellipse 6% 3% at 27% 12%, #fff 0 95%, transparent 100%),
+    radial-gradient(ellipse 8% 3.5% at 66% 22%, #fffc 0 95%, transparent 100%);
+}
+
+.campo { position: absolute; }
+.campo.rival { right: 5%; top: 12%; width: 36%; height: 40%; }
+.campo.jugador { left: 3%; bottom: 0; width: 44%; height: 52%; }
+.plataforma { position: absolute; left: 4%; right: 4%; bottom: 2%; height: 22%; border-radius: 50%;
+  background: radial-gradient(ellipse at center, #d9e8a7 0 45%, #b5cf7c 70%, #92b35e 100%);
+  box-shadow: inset 0 -6px 0 #0001; }
+.campo.jugador .plataforma { bottom: -6%; height: 26%; }
+
+.pokemon { position: absolute; left: 0; right: 0; bottom: 10%; top: 0; display: flex; align-items: flex-end;
+  justify-content: center; transition: opacity .5s, transform .5s; }
+.cuerpo { height: 92%; aspect-ratio: 1; transform-origin: 50% 100%; animation: respirar 3.2s ease-in-out infinite; }
+.campo.rival .cuerpo { animation-delay: -1.4s; }
+.tinte { width: 100%; height: 100%; transition: filter .4s; }
+.sprite { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 4px #0003); }
+.campo.jugador .sprite { transform: scaleX(-1); }
+
+.pokemon.oculto, .cuadro-info.oculto, .entrenador-campo.oculto { opacity: 0; visibility: hidden; }
+.pokemon.caido { opacity: 0; transform: translateY(35%); }
+
+/* ---------- Entrenadores (presentacion) ---------- */
+.entrenador-campo { position: absolute; display: flex; align-items: flex-end; justify-content: center;
+  transition: opacity .5s, transform .6s ease-in; z-index: 2; }
+.entrenador-campo.rival { right: 12%; top: 8%; height: 40%; }
+.entrenador-campo.jugador { left: 10%; bottom: 4%; height: 46%; }
+.entrenador-campo.jugador img { height: 100%; width: auto; filter: drop-shadow(0 6px 4px #0003); }
+.entrenador-campo.entra.rival { animation: entra-derecha .6s ease-out; }
+.entrenador-campo.entra.jugador { animation: entra-izquierda .6s ease-out; }
+.entrenador-campo.sale.rival { transform: translateX(120%); opacity: 0; }
+.entrenador-campo.sale.jugador { transform: translateX(-120%); opacity: 0; }
+
+/* ---------- Cuadros de informacion ---------- */
+.cuadro-info { position: absolute; z-index: 3; width: 44%; max-width: 340px; background: #fbfbf1; color: #222;
+  border: 3px solid #3a3f47; border-radius: 12px 4px 12px 4px; padding: 6px 12px 6px;
+  box-shadow: 4px 4px 0 #0003; font-size: .95rem; transition: opacity .4s; }
+.cuadro-info.rival { left: 4%; top: 6%; }
+.cuadro-info.jugador { right: 4%; bottom: 7%; }
+.cuadro-info .fila { display: flex; align-items: center; gap: 6px; }
+.cuadro-info .nombre { flex: 1; font-size: 1.05rem; }
+.nivel { font-weight: bold; font-size: .85rem; }
+.ps-etq { font-size: .7rem; font-weight: 800; color: #f4c430; background: #3a3f47; border-radius: 4px; padding: 0 4px; }
+.barra-hp { flex: 1; height: 9px; background: #4a4f57; border-radius: 6px; overflow: hidden; border: 1px solid #3a3f47; }
+.barra-hp .relleno { display: block; height: 100%; border-radius: 6px; transition: width .8s ease-out, background-color .3s; }
+.relleno.verde { background: #37b24d; } .relleno.amarillo { background: #f59f00; } .relleno.rojo { background: #e03131; }
+.ps-num { text-align: right; font-weight: bold; font-variant-numeric: tabular-nums; font-size: 1rem; }
+.pie { display: flex; justify-content: space-between; align-items: center; gap: 6px; min-height: 14px; margin-top: 2px; }
+.bola { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 3px; border: 1px solid #333;
+  background: linear-gradient(#e03131 0 45%, #333 45% 55%, #fff 55%); }
+.bola.caida { filter: grayscale(1); opacity: .45; }
+.chip { display: inline-block; font-size: .65rem; background: #dfe3ea; border-radius: 6px; padding: 0 5px; margin-left: 3px; }
+.estado-etq { font-size: .68rem; font-weight: bold; color: #fff; border-radius: 6px; padding: 1px 6px; background: #868e96; }
+.estado-etq.estado-quemadura { background: #e8590c; } .estado-etq.estado-paralisis { background: #e0a800; color: #222; }
+.estado-etq.estado-sueno { background: #7048e8; } .estado-etq.estado-congelado { background: #3bb3c3; }
+
+/* ---------- Cuadro de texto y menu ---------- */
+.cuadro-texto { position: relative; background: #fff; color: #1c2430; border: 1px solid #0f172a; border-top: 3px solid #0f172a;
+  border-radius: 0 0 var(--radio) var(--radio); box-shadow: var(--sombra-2);
+  padding: 14px 44px 14px 18px; min-height: 76px; font-size: 1.12rem; line-height: 1.45; cursor: pointer; }
+.cuadro-texto p { margin: 0; min-height: 1.45em; }
+.cuadro-texto .indicador { position: absolute; right: 16px; bottom: 10px; color: var(--acento); opacity: 0; }
+.cuadro-texto.esperando .indicador { opacity: 1; animation: rebote .7s ease-in-out infinite; }
+
+.menu { margin-top: 14px; transition: opacity .2s; }
+.menu.bloqueado { opacity: .45; pointer-events: none; }
+.menu h3 { margin: 4px 0 10px; font-size: 1rem; }
+.menu-principal { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra-1); padding: 10px 14px; }
+.menu-principal p { margin: 0; }
+.opciones { display: flex; gap: 10px; }
+.opcion { border: 0; border-radius: 10px; padding: 11px 28px; font-size: 1.05rem; font-weight: 700; color: #fff;
+  box-shadow: inset 0 -3px 0 #0003; }
+.opcion.luchar { background: #e03131; } .opcion.equipo { background: #2f9e44; }
+.panel { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra-1);
+  padding: 10px 14px; margin-top: 10px; }
+.panel.obligatorio { border-color: var(--acento); }
+.movimientos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mov { position: relative; border: 0; border-radius: 12px; padding: 14px; text-align: left; font-size: 1rem; color: #fff;
+  background: var(--tc, #888); box-shadow: inset 0 -3px 0 #0002; transition: transform .08s, filter .15s; }
+.mov:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
+.mov.tipo-electrico, .mov.tipo-hielo { color: #0f172a; }
+.mov small { display: block; opacity: .9; margin-top: 3px; }
+.mov .pp { position: absolute; top: 10px; right: 12px; font-size: .78rem; font-weight: bold;
+  background: #0003; border-radius: 6px; padding: 1px 6px; }
+.mov .pp.poco { background: #f59f00; color: #222; }
+.mov .pp.agotado { background: #c92a2a; color: #fff; }
+.ayuda { border: 0; background: none; padding: 0; margin-left: 8px; font-size: .8rem; font-weight: normal;
+  color: var(--suave-texto); text-decoration: underline; cursor: pointer; }
+.aviso { background: #fff3bf; color: #5c3c00; border-radius: 8px; padding: 6px 10px; margin: 0 0 10px; }
+.cambios { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+.cambios button { display: flex; align-items: center; gap: 8px; background: var(--suave); color: var(--texto);
+  border: 1px solid var(--borde); border-radius: 12px; padding: 6px 10px; text-align: left; }
+.cambios button:hover:not(:disabled) { border-color: var(--acento); }
+.cambios img { width: 44px; height: 44px; object-fit: contain; }
+.atras { margin-top: 10px; background: none; border: 0; color: var(--suave-texto); font-size: .95rem; }
+
+.cartel { display: flex; gap: 20px; align-items: center; padding: 18px 20px; border-radius: var(--radio); color: #fff;
+  box-shadow: var(--sombra-2); }
+.cartel.victoria { background: linear-gradient(135deg, #2f9e44, #1f7a33); }
+.cartel.derrota { background: linear-gradient(135deg, #c92a2a, #8f1d1d); }
+.cartel h2 { margin: 0 0 4px; font-size: 1.7rem; }
+.cartel p { margin: 4px 0; } .cartel .cita { font-style: italic; opacity: .95; }
+.cartel .avatar { border-color: #fff; }
+.cartel .acciones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.cartel .btn { background: #fff; color: #222; }
+.cartel .btn.secundario { background: #fff3; color: #fff; }
+.cartel.aparece { animation: aparece .5s ease-out; }
+
+.historial { margin-top: 18px; background: var(--tarjeta); border: 1px solid var(--borde); border-radius: var(--radio);
+  padding: 12px 16px; }
+.historial summary { cursor: pointer; font-weight: 600; }
+.historial h4 { margin: 12px 0 4px; font-size: .85rem; color: var(--suave-texto); text-transform: uppercase; letter-spacing: .04em; }
+.historial p { margin: 2px 0; font-size: .9rem; }
+
+/* ---------- Animaciones de combate ---------- */
+.efectos { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+
+.pokemon.embestida-jugador { animation: embestida-jugador .45s ease-in-out; }
+.pokemon.embestida-rival { animation: embestida-rival .45s ease-in-out; }
+.pokemon.golpeado { animation: temblor .45s linear; }
+.pokemon.golpeado .tinte { animation: parpadeo-rojo .45s steps(1) 1; }
+.campo.jugador .pokemon.esquive { animation: esquive-izq .5s ease-in-out; }
+.campo.rival .pokemon.esquive { animation: esquive-der .5s ease-in-out; }
+.campo.jugador .pokemon.entrada { animation: entra-izquierda .5s ease-out; }
+.campo.rival .pokemon.entrada { animation: entra-derecha .5s ease-out; }
+.pokemon.retirada { opacity: 0; transform: scale(.2); }
+
+/* Color segun el tipo del movimiento */
+[data-tipo] { --c: #adb5bd; }
+[data-tipo="normal"] { --c: #ced4da; } [data-tipo="fuego"] { --c: #ff6b1a; } [data-tipo="agua"] { --c: #339af0; }
+[data-tipo="planta"] { --c: #51cf66; } [data-tipo="electrico"] { --c: #ffd43b; } [data-tipo="tierra"] { --c: #c08a3e; }
+[data-tipo="volador"] { --c: #91a7ff; } [data-tipo="hielo"] { --c: #66d9e8; } [data-tipo="fantasma"] { --c: #7950f2; }
+[data-tipo="psiquico"] { --c: #f06595; } [data-tipo="roca"] { --c: #a68b5b; } [data-tipo="dragon"] { --c: #7048e8; }
+[data-tipo="quemadura"] { --c: #ff6b1a; } [data-tipo="paralisis"] { --c: #ffd43b; }
+[data-tipo="sueno"] { --c: #9775fa; } [data-tipo="congelado"] { --c: #66d9e8; }
+
+.destello { position: absolute; left: 50%; top: 55%; width: 60%; aspect-ratio: 1; margin-left: -30%; margin-top: -30%;
+  border-radius: 50%; background: radial-gradient(circle, #fff 0 15%, var(--c) 40%, transparent 70%);
+  animation: destello .55s ease-out forwards; mix-blend-mode: screen; }
+.halo { position: absolute; left: 50%; top: 55%; width: 70%; aspect-ratio: 1; margin-left: -35%; margin-top: -35%;
+  border-radius: 50%; border: 4px solid var(--c); box-shadow: 0 0 18px var(--c), inset 0 0 18px var(--c);
+  animation: halo .7s ease-out forwards; }
+.numero { position: absolute; left: 50%; top: 30%; transform: translateX(-50%); font-weight: 900; font-size: 1.6rem;
+  color: #fff; -webkit-text-stroke: 1px #c92a2a; text-shadow: 0 2px 0 #c92a2a, 0 0 6px #0006;
+  animation: flotar 1s ease-out forwards; }
+.numero.critico { font-size: 2rem; color: #ffe066; }
+.flecha { position: absolute; left: 50%; top: 40%; font-size: 2.6rem; font-weight: 900; transform: translateX(-50%); }
+.flecha.sube { color: #fa5252; text-shadow: 0 0 8px #fff; animation: flecha-sube .9s ease-out forwards; }
+.flecha.baja { color: #4dabf7; text-shadow: 0 0 8px #fff; animation: flecha-baja .9s ease-out forwards; }
+.chispa-cura { position: absolute; bottom: 20%; width: 10px; height: 10px; border-radius: 50%;
+  background: #b2f2bb; box-shadow: 0 0 10px #40c057, 0 0 4px #fff; animation: cura 1s ease-out forwards; }
+
+/* ---------- Efectos de estado sobre el sprite ---------- */
+.capa-estado { position: absolute; inset: 0; pointer-events: none; }
+.capa-estado i { display: none; position: absolute; }
+
+.tinte.estado-quemadura { filter: sepia(.45) saturate(2.2) hue-rotate(-25deg); }
+.tinte.estado-congelado { filter: grayscale(.35) sepia(.4) hue-rotate(155deg) saturate(2.4) brightness(1.08); }
+.tinte.estado-paralisis { animation: temblor-electrico 1.6s steps(2) infinite; }
+
+/* Dormido: tres "Z" que suben */
+.capa-estado.estado-sueno i { display: block; font-style: normal; font-weight: 900; color: #5f3dc4;
+  text-shadow: 0 0 4px #fff; left: 62%; top: 30%; animation: zeta 2.4s ease-in infinite; opacity: 0; }
+.capa-estado.estado-sueno i::before { content: "Z"; }
+.capa-estado.estado-sueno i:nth-child(1) { font-size: 1rem; }
+.capa-estado.estado-sueno i:nth-child(2) { font-size: 1.3rem; animation-delay: .8s; }
+.capa-estado.estado-sueno i:nth-child(3) { font-size: 1.6rem; animation-delay: 1.6s; }
+
+/* Quemado: llamitas */
+.capa-estado.estado-quemadura i { display: block; bottom: 12%; width: 16px; height: 24px;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  background: radial-gradient(ellipse at 50% 75%, #fff3bf 0 15%, #ffa94d 40%, #f03e3e 80%);
+  animation: llama .7s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+.capa-estado.estado-quemadura i:nth-child(1) { left: 28%; }
+.capa-estado.estado-quemadura i:nth-child(2) { left: 48%; bottom: 18%; animation-delay: .25s; }
+.capa-estado.estado-quemadura i:nth-child(3) { left: 66%; animation-delay: .45s; }
+
+/* Paralizado: chispas */
+.capa-estado.estado-paralisis i { display: block; width: 18px; height: 26px; background: #ffe066;
+  clip-path: polygon(55% 0, 15% 55%, 45% 55%, 30% 100%, 85% 40%, 55% 40%, 75% 0);
+  filter: drop-shadow(0 0 3px #fab005); animation: chispa 1s steps(1) infinite; }
+.capa-estado.estado-paralisis i:nth-child(1) { left: 22%; top: 35%; }
+.capa-estado.estado-paralisis i:nth-child(2) { left: 68%; top: 25%; animation-delay: .33s; }
+.capa-estado.estado-paralisis i:nth-child(3) { left: 50%; top: 60%; animation-delay: .66s; }
+
+/* Congelado: cristales */
+.capa-estado.estado-congelado i { display: block; width: 16px; height: 16px; background: #e3fafc;
+  border: 2px solid #66d9e8; transform: rotate(45deg); box-shadow: 0 0 8px #99e9f2;
+  animation: cristal 1.8s ease-in-out infinite; }
+.capa-estado.estado-congelado i:nth-child(1) { left: 25%; top: 40%; }
+.capa-estado.estado-congelado i:nth-child(2) { left: 64%; top: 30%; animation-delay: .6s; width: 12px; height: 12px; }
+.capa-estado.estado-congelado i:nth-child(3) { left: 48%; top: 68%; animation-delay: 1.2s; }
+
+/* ---------- Keyframes ---------- */
+@keyframes respirar { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.015, 1.035) translateY(-1%); } }
+@keyframes embestida-jugador { 40% { transform: translate(22%, -14%) scale(1.04); } }
+@keyframes embestida-rival { 40% { transform: translate(-22%, 14%) scale(1.04); } }
+@keyframes temblor { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-7%); } 40% { transform: translateX(6%); }
+  60% { transform: translateX(-4%); } 80% { transform: translateX(3%); } }
+@keyframes parpadeo-rojo { 0% { filter: brightness(1.4) sepia(1) saturate(6) hue-rotate(-50deg); } 25% { opacity: .2; }
+  50% { filter: brightness(1.4) sepia(1) saturate(6) hue-rotate(-50deg); opacity: 1; } 75% { opacity: .3; } 100% { opacity: 1; } }
+@keyframes esquive-izq { 45% { transform: translateX(-24%); opacity: .6; } }
+@keyframes esquive-der { 45% { transform: translateX(24%); opacity: .6; } }
+@keyframes entra-izquierda { from { transform: translateX(-70%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes entra-derecha { from { transform: translateX(70%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes destello { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+@keyframes halo { from { transform: scale(.5); opacity: 1; } to { transform: scale(1.2); opacity: 0; } }
+@keyframes flotar { from { opacity: 0; transform: translate(-50%, 20px); } 20% { opacity: 1; }
+  to { opacity: 0; transform: translate(-50%, -40px); } }
+@keyframes flecha-sube { from { opacity: 0; transform: translate(-50%, 30px); } 30% { opacity: 1; }
+  to { opacity: 0; transform: translate(-50%, -40px); } }
+@keyframes flecha-baja { from { opacity: 0; transform: translate(-50%, -30px); } 30% { opacity: 1; }
+  to { opacity: 0; transform: translate(-50%, 40px); } }
+@keyframes cura { from { opacity: 0; transform: translateY(0) scale(.5); } 30% { opacity: 1; }
+  to { opacity: 0; transform: translateY(-120px) scale(1.1); } }
+@keyframes zeta { 0% { opacity: 0; transform: translate(0, 0); } 20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(30px, -50px); } }
+@keyframes llama { from { transform: scale(1, 1); } to { transform: scale(.85, 1.25); } }
+@keyframes chispa { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes temblor-electrico { 0% { transform: translateX(0); } 50% { transform: translateX(2px); } }
+@keyframes cristal { 0%, 100% { opacity: .5; } 50% { opacity: 1; box-shadow: 0 0 14px #c5f6fa; } }
+@keyframes rebote { 50% { transform: translateY(3px); } }
+@keyframes aparece { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* Reducir movimiento (preferencia del sistema) */
+@media (prefers-reduced-motion: reduce) {
+  .escena *, .cuadro-texto *, .cartel { animation: none !important; transition: none !important; }
+  .capa-estado i { opacity: 1 !important; }
+}
+
+@media (max-width: 640px) {
+  .escena { aspect-ratio: 4 / 3; }
+  .cuadro-info { width: 52%; padding: 4px 8px; font-size: .8rem; }
+  .cuadro-info .nombre { font-size: .9rem; }
+  .avatar.grande { width: 80px; height: 80px; font-size: 2rem; }
+  .cuadro-texto { font-size: 1rem; }
+  .movimientos { grid-template-columns: 1fr; }
+  .cartel { flex-direction: column; text-align: center; }
+  .cartel .acciones { justify-content: center; }
+  .opcion { padding: 10px 18px; }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "misty", "nombre": "Misty", "relacion": "Amiga de Ash",
+    "saludo": "¡Mis Pokémon de agua te van a dejar empapado! ¡Prepárate!",
+    "victoria": "¡Increíble! Me has ganado... pero la próxima vez no tendré piedad.",
+    "derrota": "¡Ja! Con un poco más de entrenamiento podrás con mis Pokémon.",
+    "sprite": "img/trainers/misty.png", "color": "#1c7ed6"
+  },
+  {
+    "slug": "brock", "nombre": "Brock", "relacion": "Amigo de Ash",
+    "saludo": "Mis Pokémon son firmes como una roca. ¡Demuestra lo que tienes!",
+    "victoria": "Has ganado con todas las de la ley. ¡Fue un gran combate!",
+    "derrota": "La paciencia y el cariño hacen fuertes a los Pokémon. ¡Inténtalo otra vez!",
+    "sprite": "img/trainers/brock.png", "color": "#8d6e3f"
+  },
+  {
+    "slug": "gary", "nombre": "Gary", "relacion": "Rival de Ash",
+    "saludo": "¡Vaya, otro retador! Te voy a enseñar cómo se hace esto.",
+    "victoria": "¡Hmpf! Has tenido suerte. La revancha será mía.",
+    "derrota": "¡Ja, ja! Eso fue demasiado fácil. ¡Huele a victoria!",
+    "sprite": "img/trainers/gary.png", "color": "#7048e8"
+  },
+  {
+    "slug": "dawn", "nombre": "Maya", "relacion": "Amiga de Ash",
+    "saludo": "¡Vamos a hacer un combate brillante y lleno de estilo!",
+    "victoria": "¡Wow, qué combate! Me has dejado sin palabras.",
+    "derrota": "¡No te desanimes! Con práctica lo conseguirás.",
+    "sprite": "img/trainers/dawn.png", "color": "#e64980"
+  },
+  {
+    "slug": "paul", "nombre": "Paul", "relacion": "Rival de Ash",
+    "saludo": "No pierdas mi tiempo. Demuestra que eres digno de combatir.",
+    "victoria": "...Has ganado. Pero no te confíes.",
+    "derrota": "Como esperaba. Demasiado débil.",
+    "sprite": "img/trainers/paul.png", "color": "#495057"
+  },
+  {
+    "slug": "iris", "nombre": "Iris", "relacion": "Amiga de Ash",
+    "saludo": "¡Eh! ¡Voy a mostrarte lo que es un verdadero combate!",
+    "victoria": "¡Vaya! Eres más fuerte de lo que parecías.",
+    "derrota": "¡Jajaja! ¡Todavía te falta mucho por aprender!",
+    "sprite": "img/trainers/iris.png", "color": "#c2255c"
+  }
+]

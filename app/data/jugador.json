@@ -1,0 +1,7 @@
+{
+  "slug": "ethan",
+  "nombre": "Ethan",
+  "descripcion": "Protagonista de Oro y Plata",
+  "sprite": "img/trainers/ethan.png",
+  "dibujo": "img/trainers/ethan_dibujo.svg"
+}

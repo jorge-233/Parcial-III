@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block titulo %}{{ especie.nombre }} · PokéBattle{% endblock %}
+{% block contenido %}
+{% macro nivel(v) %}{{ 'nivel-1' if v < 50 else ('nivel-2' if v < 70 else ('nivel-3' if v < 90 else ('nivel-4' if v < 110 else 'nivel-5'))) }}{% endmacro %}
+
+<div class="encabezado-pagina">
+  <nav class="migas"><a href="/">Pokédex</a> / {{ especie.nombre }}</nav>
+  <div style="display:flex; gap:8px">
+    <a class="btn fantasma" href="/pokemon/{{ anterior.slug }}">← #{{ '%03d' | format(anterior.id) }} {{ anterior.nombre.split(' (')[0] }}</a>
+    <a class="btn fantasma" href="/pokemon/{{ siguiente.slug }}">{{ siguiente.nombre.split(' (')[0] }} #{{ '%03d' | format(siguiente.id) }} →</a>
+  </div>
+</div>
+
+<section class="ficha">
+  <div class="ficha-media" style="--tc: var(--t-{{ especie.tipos[0] }})">
+    <span class="pk-num">#{{ '%03d' | format(especie.id) }}</span>
+    <img src="/static/{{ especie.sprite }}" alt="{{ especie.nombre }}" onerror="this.style.visibility='hidden'">
+  </div>
+
+  <div class="ficha-info panel-base">
+    <span class="eyebrow">N.º {{ '%03d' | format(especie.id) }}</span>
+    <h1>{{ especie.nombre }}</h1>
+    <div class="tipos">{% for t in especie.tipos %}<span class="tipo tipo-{{ t }}">{{ t | tipo }}</span>{% endfor %}</div>
+
+    <h2>Estadísticas base</h2>
+    <div class="stats">
+      {% for nombre, valor in especie.stats_base.items() %}
+      <span class="nombre-stat">{{ nombre | stat }}</span>
+      <span class="valor num">{{ valor }}</span>
+      <span class="pista" title="A nivel 50: {{ stats_nivel[nombre] }}">
+        <span class="{{ nivel(valor) }}" style="width: {{ [valor / 180 * 100, 100] | min }}%"></span>
+      </span>
+      {% endfor %}
+      <span class="nombre-stat total">Total</span>
+      <span class="valor num total">{{ especie.stats_base.values() | sum }}</span>
+      <span class="total"></span>
+    </div>
+    <p class="nota">En combate todos están a nivel 50: {{ stats_nivel.hp }} PS, {{ stats_nivel.ataque }} de Ataque y
+      {{ stats_nivel.velocidad }} de Velocidad.</p>
+  </div>
+</section>
+
+<section class="panel-base">
+  <div style="padding: 18px 20px 6px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+    <h2 style="margin:0">Movimientos</h2>
+    <a class="btn fantasma" href="/movimientos">Ver todos los movimientos</a>
+  </div>
+  <div class="tabla-contenedor">
+    <table class="tabla">
+      <thead>
+        <tr><th>Movimiento</th><th>Tipo</th><th>Categoría</th><th class="n">Poder</th><th class="n">Precisión</th>
+            <th class="n">PP</th><th>Efecto</th></tr>
+      </thead>
+      <tbody>
+        {% for m in movimientos %}
+        <tr>
+          <td><a class="nombre-mov" href="/movimientos#{{ m.id }}">{{ m.nombre }}</a></td>
+          <td><span class="tipo tipo-{{ m.tipo }}">{{ m.tipo | tipo }}</span></td>
+          <td><span class="categoria cat-{{ m.categoria }}">{{ m.categoria | categoria }}</span></td>
+          <td class="n">{{ m.poder or "—" }}</td>
+          <td class="n">{{ (m.precision ~ " %") if m.precision else "—" }}</td>
+          <td class="n">{{ m.pp or "—" }}</td>
+          <td class="efecto">{{ m | describir }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{
+  "tipos": [
+    "normal",
+    "fuego",
+    "agua",
+    "planta",
+    "electrico",
+    "tierra",
+    "volador",
+    "hielo",
+    "fantasma",
+    "psiquico",
+    "roca",
+    "dragon"
+  ],
+  "efectividad": {
+    "normal": {
+      "roca": 0.5,
+      "fantasma": 0
+    },
+    "fuego": {
+      "planta": 2,
+      "hielo": 2,
+      "fuego": 0.5,
+      "agua": 0.5,
+      "roca": 0.5,
+      "dragon": 0.5
+    },
+    "agua": {
+      "fuego": 2,
+      "tierra": 2,
+      "roca": 2,
+      "agua": 0.5,
+      "planta": 0.5,
+      "dragon": 0.5
+    },
+    "planta": {
+      "agua": 2,
+      "tierra": 2,
+      "roca": 2,
+      "fuego": 0.5,
+      "planta": 0.5,
+      "volador": 0.5,
+      "dragon": 0.5
+    },
+    "electrico": {
+      "agua": 2,
+      "volador": 2,
+      "electrico": 0.5,
+      "planta": 0.5,
+      "tierra": 0,
+      "dragon": 0.5
+    },
+    "tierra": {
+      "fuego": 2,
+      "electrico": 2,
+      "roca": 2,
+      "planta": 0.5,
+      "volador": 0
+    },
+    "volador": {
+      "planta": 2,
+      "electrico": 0.5,
+      "roca": 0.5
+    },
+    "hielo": {
+      "planta": 2,
+      "tierra": 2,
+      "volador": 2,
+      "dragon": 2,
+      "fuego": 0.5,
+      "agua": 0.5,
+      "hielo": 0.5
+    },
+    "fantasma": {
+      "fantasma": 2,
+      "psiquico": 2,
+      "normal": 0
+    },
+    "psiquico": {
+      "psiquico": 0.5
+    },
+    "roca": {
+      "fuego": 2,
+      "hielo": 2,
+      "volador": 2,
+      "tierra": 0.5
+    },
+    "dragon": {
+      "dragon": 2
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block titulo %}Movimientos · PokéBattle{% endblock %}
+{% block contenido %}
+<div class="encabezado-pagina">
+  <div>
+    <span class="eyebrow">Referencia</span>
+    <h1>Movimientos</h1>
+    <p>{{ movimientos | length }} movimientos{% if tipo_actual %} de tipo {{ tipo_actual | tipo }}{% endif %}:
+       qué hacen en combate y qué Pokémon los conocen. Haz clic en una columna para ordenar.</p>
+  </div>
+  <div class="segmentado" id="filtro-categoria" role="group" aria-label="Categoría">
+    <button type="button" class="activo" data-cat="">Todas</button>
+    <button type="button" data-cat="fisico">Físico</button>
+    <button type="button" data-cat="especial">Especial</button>
+    <button type="button" data-cat="estado">Estado</button>
+  </div>
+</div>
+
+<div class="barra-herramientas">
+  <label class="buscador">
+    <span hidden>Buscar movimiento</span>
+    <input type="search" id="buscar" placeholder="Buscar movimiento o efecto" autocomplete="off">
+  </label>
+  <nav class="chips" aria-label="Filtrar por tipo">
+    <a href="/movimientos" class="chip-filtro todos {{ 'activo' if not tipo_actual }}">Todos</a>
+    {% for t in tipos %}
+    <a href="/movimientos?tipo={{ t }}" class="chip-filtro {{ 'activo' if t == tipo_actual }}" style="--tc: var(--t-{{ t }})">{{ t | tipo }}</a>
+    {% endfor %}
+  </nav>
+  <span class="contador-resultados" id="resultados">{{ movimientos | length }} resultados</span>
+</div>
+
+<section class="panel-base">
+  <div class="tabla-contenedor">
+    <table class="tabla" id="tabla-movs">
+      <thead>
+        <tr>
+          <th data-col="0" data-tipo="texto"><button type="button">Nombre</button></th>
+          <th data-col="1" data-tipo="texto"><button type="button">Tipo</button></th>
+          <th data-col="2" data-tipo="texto"><button type="button">Categoría</button></th>
+          <th class="n" data-col="3" data-tipo="numero"><button type="button">Poder</button></th>
+          <th class="n" data-col="4" data-tipo="numero"><button type="button">Precisión</button></th>
+          <th class="n" data-col="5" data-tipo="numero"><button type="button">PP</button></th>
+          <th class="n" data-col="6" data-tipo="numero"><button type="button">Prior.</button></th>
+          <th>Efecto</th>
+          <th>Lo aprenden</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in movimientos %}
+        <tr id="{{ m.id }}" data-cat="{{ m.categoria }}">
+          <td data-valor="{{ m.nombre }}"><a class="nombre-mov" href="#{{ m.id }}">{{ m.nombre }}</a></td>
+          <td data-valor="{{ m.tipo }}"><span class="tipo tipo-{{ m.tipo }}">{{ m.tipo | tipo }}</span></td>
+          <td data-valor="{{ m.categoria }}"><span class="categoria cat-{{ m.categoria }}">{{ m.categoria | categoria }}</span></td>
+          <td class="n" data-valor="{{ m.poder or -1 }}">{{ m.poder or "—" }}</td>
+          <td class="n" data-valor="{{ m.precision or 101 }}">{{ (m.precision ~ " %") if m.precision else "—" }}</td>
+          <td class="n" data-valor="{{ m.pp or -1 }}">{{ m.pp or "—" }}</td>
+          <td class="n" data-valor="{{ m.prioridad }}">{{ '%+d' | format(m.prioridad) if m.prioridad else "0" }}</td>
+          <td class="efecto">{{ m | describir }}</td>
+          <td>
+            <div class="aprenden">
+              {% for e in aprenden[m.id][:5] %}
+              <a href="/pokemon/{{ e.slug }}" title="{{ e.nombre }}">
+                <img src="/static/{{ e.sprite }}" alt="{{ e.nombre }}" loading="lazy" onerror="this.style.visibility='hidden'">
+              </a>
+              {% endfor %}
+              {% if aprenden[m.id] | length > 5 %}<span class="mas" title="{{ aprenden[m.id][5:] | map(attribute='nombre') | join(', ') }}">+{{ aprenden[m.id] | length - 5 }}</span>{% endif %}
+              {% if not aprenden[m.id] %}<span class="mas">—</span>{% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="sin-resultados" id="sin-resultados" hidden>No hay movimientos que coincidan.</p>
+</section>
+
+<script>
+  (function () {
+    const tabla = document.getElementById('tabla-movs');
+    const cuerpo = tabla.tBodies[0];
+    const filas = Array.from(cuerpo.rows);
+    const buscar = document.getElementById('buscar');
+    const resultados = document.getElementById('resultados');
+    const vacio = document.getElementById('sin-resultados');
+    let categoria = '';
+
+    function filtrar() {
+      const q = buscar.value.trim().toLowerCase();
+      let n = 0;
+      filas.forEach(f => {
+        const ok = (!q || f.textContent.toLowerCase().includes(q)) && (!categoria || f.dataset.cat === categoria);
+        f.hidden = !ok;
+        if (ok) n++;
+      });
+      resultados.textContent = n + (n === 1 ? ' resultado' : ' resultados');
+      vacio.hidden = n > 0;
+    }
+    buscar.addEventListener('input', filtrar);
+    document.querySelectorAll('#filtro-categoria button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#filtro-categoria button').forEach(x => x.classList.toggle('activo', x === b));
+      categoria = b.dataset.cat;
+      filtrar();
+    }));
+
+    // Ordenar por columna
+    tabla.querySelectorAll('th[data-col]').forEach(th => th.querySelector('button').addEventListener('click', () => {
+      const col = +th.dataset.col;
+      const asc = th.getAttribute('aria-sort') !== 'ascending';
+      tabla.querySelectorAll('th[data-col]').forEach(x => x.removeAttribute('aria-sort'));
+      th.setAttribute('aria-sort', asc ? 'ascending' : 'descending');
+      const valor = f => f.cells[col].dataset.valor;
+      const comparar = th.dataset.tipo === 'numero'
+        ? (a, b) => valor(a) - valor(b)
+        : (a, b) => valor(a).localeCompare(valor(b), 'es');
+      filas.sort((a, b) => asc ? comparar(a, b) : comparar(b, a)).forEach(f => cuerpo.appendChild(f));
+    }));
+  })();
+</script>
+{% endblock %}

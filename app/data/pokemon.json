@@ -1,0 +1,486 @@
+{
+  "charizard": {
+    "id": 6,
+    "nombre": "Charizard",
+    "tipos": [
+      "fuego"
+    ],
+    "stats": {
+      "hp": 78,
+      "ataque": 84,
+      "defensa": 78,
+      "atq_esp": 109,
+      "def_esp": 85,
+      "velocidad": 100
+    },
+    "movimientos": [
+      "lanzallamas",
+      "ataque_ala",
+      "danza_espada",
+      "fuego_fatuo"
+    ],
+    "sprite": "img/charizard.png"
+  },
+  "blaziken": {
+    "id": 257,
+    "nombre": "Blaziken",
+    "tipos": [
+      "fuego"
+    ],
+    "stats": {
+      "hp": 80,
+      "ataque": 120,
+      "defensa": 70,
+      "atq_esp": 110,
+      "def_esp": 70,
+      "velocidad": 80
+    },
+    "movimientos": [
+      "lanzallamas",
+      "envite_igneo",
+      "danza_espada",
+      "terremoto"
+    ],
+    "sprite": "img/blaziken.png"
+  },
+  "blastoise": {
+    "id": 9,
+    "nombre": "Blastoise",
+    "tipos": [
+      "agua"
+    ],
+    "stats": {
+      "hp": 79,
+      "ataque": 83,
+      "defensa": 100,
+      "atq_esp": 85,
+      "def_esp": 105,
+      "velocidad": 78
+    },
+    "movimientos": [
+      "surf",
+      "rayo_hielo",
+      "refugio",
+      "descanso"
+    ],
+    "sprite": "img/blastoise.png"
+  },
+  "swampert": {
+    "id": 260,
+    "nombre": "Swampert",
+    "tipos": [
+      "agua"
+    ],
+    "stats": {
+      "hp": 100,
+      "ataque": 110,
+      "defensa": 90,
+      "atq_esp": 85,
+      "def_esp": 90,
+      "velocidad": 60
+    },
+    "movimientos": [
+      "hidrobomba",
+      "terremoto",
+      "rayo_hielo",
+      "descanso"
+    ],
+    "sprite": "img/swampert.png"
+  },
+  "venusaur": {
+    "id": 3,
+    "nombre": "Venusaur",
+    "tipos": [
+      "planta"
+    ],
+    "stats": {
+      "hp": 80,
+      "ataque": 82,
+      "defensa": 83,
+      "atq_esp": 100,
+      "def_esp": 100,
+      "velocidad": 80
+    },
+    "movimientos": [
+      "latigo_cepa",
+      "somnifero",
+      "sintesis",
+      "terremoto"
+    ],
+    "sprite": "img/venusaur.png"
+  },
+  "sceptile": {
+    "id": 254,
+    "nombre": "Sceptile",
+    "tipos": [
+      "planta"
+    ],
+    "stats": {
+      "hp": 70,
+      "ataque": 85,
+      "defensa": 65,
+      "atq_esp": 105,
+      "def_esp": 85,
+      "velocidad": 120
+    },
+    "movimientos": [
+      "hoja_aguda",
+      "gigadrenado",
+      "ataque_rapido",
+      "danza_espada"
+    ],
+    "sprite": "img/sceptile.png"
+  },
+  "pikachu": {
+    "id": 25,
+    "nombre": "Pikachu (compañero)",
+    "tipos": [
+      "electrico"
+    ],
+    "stats": {
+      "hp": 45,
+      "ataque": 80,
+      "defensa": 50,
+      "atq_esp": 75,
+      "def_esp": 60,
+      "velocidad": 120
+    },
+    "movimientos": [
+      "rayo",
+      "trueno",
+      "ataque_rapido",
+      "onda_trueno"
+    ],
+    "sprite": "img/pikachu.png"
+  },
+  "zapdos": {
+    "id": 145,
+    "nombre": "Zapdos",
+    "tipos": [
+      "electrico"
+    ],
+    "stats": {
+      "hp": 90,
+      "ataque": 90,
+      "defensa": 85,
+      "atq_esp": 125,
+      "def_esp": 90,
+      "velocidad": 100
+    },
+    "movimientos": [
+      "rayo",
+      "onda_trueno",
+      "ataque_ala",
+      "respiro"
+    ],
+    "sprite": "img/zapdos.png"
+  },
+  "dugtrio": {
+    "id": 51,
+    "nombre": "Dugtrio",
+    "tipos": [
+      "tierra"
+    ],
+    "stats": {
+      "hp": 35,
+      "ataque": 100,
+      "defensa": 50,
+      "atq_esp": 50,
+      "def_esp": 70,
+      "velocidad": 120
+    },
+    "movimientos": [
+      "terremoto",
+      "bofeton_lodo",
+      "tajo",
+      "ataque_arena"
+    ],
+    "sprite": "img/dugtrio.png"
+  },
+  "pidgeot": {
+    "id": 18,
+    "nombre": "Pidgeot",
+    "tipos": [
+      "volador"
+    ],
+    "stats": {
+      "hp": 83,
+      "ataque": 80,
+      "defensa": 75,
+      "atq_esp": 70,
+      "def_esp": 70,
+      "velocidad": 101
+    },
+    "movimientos": [
+      "ataque_ala",
+      "tornado",
+      "ataque_rapido",
+      "respiro"
+    ],
+    "sprite": "img/pidgeot.png"
+  },
+  "articuno": {
+    "id": 144,
+    "nombre": "Articuno",
+    "tipos": [
+      "hielo"
+    ],
+    "stats": {
+      "hp": 90,
+      "ataque": 85,
+      "defensa": 100,
+      "atq_esp": 95,
+      "def_esp": 125,
+      "velocidad": 85
+    },
+    "movimientos": [
+      "rayo_hielo",
+      "ventisca",
+      "ataque_ala",
+      "respiro"
+    ],
+    "sprite": "img/articuno.png"
+  },
+  "snorlax": {
+    "id": 143,
+    "nombre": "Snorlax",
+    "tipos": [
+      "normal"
+    ],
+    "stats": {
+      "hp": 160,
+      "ataque": 110,
+      "defensa": 65,
+      "atq_esp": 65,
+      "def_esp": 110,
+      "velocidad": 30
+    },
+    "movimientos": [
+      "golpe_cuerpo",
+      "terremoto",
+      "puno_hielo",
+      "descanso"
+    ],
+    "sprite": "img/snorlax.png"
+  },
+  "gengar": {
+    "id": 94,
+    "nombre": "Gengar",
+    "tipos": [
+      "fantasma"
+    ],
+    "stats": {
+      "hp": 60,
+      "ataque": 65,
+      "defensa": 60,
+      "atq_esp": 130,
+      "def_esp": 75,
+      "velocidad": 110
+    },
+    "movimientos": [
+      "bola_sombra",
+      "hipnosis",
+      "rayo",
+      "puno_fuego"
+    ],
+    "sprite": "img/gengar.png"
+  },
+  "gardevoir": {
+    "id": 282,
+    "nombre": "Gardevoir",
+    "tipos": [
+      "psiquico"
+    ],
+    "stats": {
+      "hp": 68,
+      "ataque": 65,
+      "defensa": 65,
+      "atq_esp": 125,
+      "def_esp": 115,
+      "velocidad": 80
+    },
+    "movimientos": [
+      "psiquico",
+      "paz_mental",
+      "hipnosis",
+      "bola_sombra"
+    ],
+    "sprite": "img/gardevoir.png"
+  },
+  "golem": {
+    "id": 76,
+    "nombre": "Golem",
+    "tipos": [
+      "roca"
+    ],
+    "stats": {
+      "hp": 80,
+      "ataque": 120,
+      "defensa": 130,
+      "atq_esp": 55,
+      "def_esp": 65,
+      "velocidad": 45
+    },
+    "movimientos": [
+      "roca_afilada",
+      "terremoto",
+      "rizo_defensa",
+      "puno_fuego"
+    ],
+    "sprite": "img/golem.png"
+  },
+  "mewtwo": {
+    "id": 150,
+    "nombre": "Mewtwo",
+    "tipos": [
+      "psiquico"
+    ],
+    "stats": {
+      "hp": 106,
+      "ataque": 110,
+      "defensa": 90,
+      "atq_esp": 154,
+      "def_esp": 90,
+      "velocidad": 130
+    },
+    "movimientos": [
+      "psiquico",
+      "bola_sombra",
+      "rayo_hielo",
+      "recuperacion"
+    ],
+    "sprite": "img/mewtwo.png"
+  },
+  "moltres": {
+    "id": 146,
+    "nombre": "Moltres",
+    "tipos": [
+      "fuego"
+    ],
+    "stats": {
+      "hp": 90,
+      "ataque": 100,
+      "defensa": 90,
+      "atq_esp": 125,
+      "def_esp": 85,
+      "velocidad": 90
+    },
+    "movimientos": [
+      "llamarada",
+      "ataque_ala",
+      "fuego_fatuo",
+      "respiro"
+    ],
+    "sprite": "img/moltres.png"
+  },
+  "lapras": {
+    "id": 131,
+    "nombre": "Lapras",
+    "tipos": [
+      "hielo"
+    ],
+    "stats": {
+      "hp": 130,
+      "ataque": 85,
+      "defensa": 80,
+      "atq_esp": 85,
+      "def_esp": 95,
+      "velocidad": 60
+    },
+    "movimientos": [
+      "surf",
+      "rayo_hielo",
+      "canto",
+      "rayo"
+    ],
+    "sprite": "img/lapras.png"
+  },
+  "eevee": {
+    "id": 133,
+    "nombre": "Eevee (compañero)",
+    "tipos": [
+      "normal"
+    ],
+    "stats": {
+      "hp": 65,
+      "ataque": 75,
+      "defensa": 70,
+      "atq_esp": 65,
+      "def_esp": 85,
+      "velocidad": 75
+    },
+    "movimientos": [
+      "golpe_cuerpo",
+      "ataque_rapido",
+      "mordisco",
+      "ataque_arena"
+    ],
+    "sprite": "img/eevee.png"
+  },
+  "rayquaza": {
+    "id": 384,
+    "nombre": "Rayquaza",
+    "tipos": [
+      "dragon"
+    ],
+    "stats": {
+      "hp": 105,
+      "ataque": 150,
+      "defensa": 90,
+      "atq_esp": 150,
+      "def_esp": 90,
+      "velocidad": 95
+    },
+    "movimientos": [
+      "garra_dragon",
+      "pulso_dragon",
+      "terremoto",
+      "danza_dragon"
+    ],
+    "sprite": "img/rayquaza.png"
+  },
+  "kyogre": {
+    "id": 382,
+    "nombre": "Kyogre",
+    "tipos": [
+      "agua"
+    ],
+    "stats": {
+      "hp": 100,
+      "ataque": 100,
+      "defensa": 90,
+      "atq_esp": 150,
+      "def_esp": 140,
+      "velocidad": 90
+    },
+    "movimientos": [
+      "hidrobomba",
+      "surf",
+      "ventisca",
+      "trueno"
+    ],
+    "sprite": "img/kyogre.png"
+  },
+  "groudon": {
+    "id": 383,
+    "nombre": "Groudon",
+    "tipos": [
+      "tierra"
+    ],
+    "stats": {
+      "hp": 100,
+      "ataque": 150,
+      "defensa": 140,
+      "atq_esp": 100,
+      "def_esp": 90,
+      "velocidad": 90
+    },
+    "movimientos": [
+      "terremoto",
+      "roca_afilada",
+      "puno_fuego",
+      "danza_espada"
+    ],
+    "sprite": "img/groudon.png"
+  }
+}

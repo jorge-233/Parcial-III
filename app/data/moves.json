@@ -1,0 +1,679 @@
+{
+  "lanzallamas": {
+    "nombre": "Lanzallamas",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "poder": 90,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "quemadura",
+        "prob": 0.1
+      }
+    ],
+    "pp": 15
+  },
+  "ataque_ala": {
+    "nombre": "Ataque Ala",
+    "tipo": "volador",
+    "categoria": "fisico",
+    "poder": 60,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 35
+  },
+  "danza_espada": {
+    "nombre": "Danza Espada",
+    "tipo": "normal",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "ataque",
+        "etapas": 2,
+        "prob": 1.0
+      }
+    ],
+    "pp": 20
+  },
+  "fuego_fatuo": {
+    "nombre": "Fuego Fatuo",
+    "tipo": "fuego",
+    "categoria": "estado",
+    "poder": null,
+    "precision": 85,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "quemadura",
+        "prob": 1.0
+      }
+    ],
+    "pp": 15
+  },
+  "envite_igneo": {
+    "nombre": "Envite Ígneo",
+    "tipo": "fuego",
+    "categoria": "fisico",
+    "poder": 120,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "retroceso",
+        "fraccion": 0.33
+      }
+    ],
+    "pp": 15
+  },
+  "terremoto": {
+    "nombre": "Terremoto",
+    "tipo": "tierra",
+    "categoria": "fisico",
+    "poder": 100,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 10
+  },
+  "surf": {
+    "nombre": "Surf",
+    "tipo": "agua",
+    "categoria": "especial",
+    "poder": 90,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 15
+  },
+  "rayo_hielo": {
+    "nombre": "Rayo Hielo",
+    "tipo": "hielo",
+    "categoria": "especial",
+    "poder": 90,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "congelado",
+        "prob": 0.1
+      }
+    ],
+    "pp": 10
+  },
+  "refugio": {
+    "nombre": "Refugio",
+    "tipo": "normal",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "defensa",
+        "etapas": 1,
+        "prob": 1.0
+      }
+    ],
+    "pp": 40
+  },
+  "descanso": {
+    "nombre": "Descanso",
+    "tipo": "normal",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "descanso"
+      }
+    ],
+    "pp": 5
+  },
+  "hidrobomba": {
+    "nombre": "Hidrobomba",
+    "tipo": "agua",
+    "categoria": "especial",
+    "poder": 110,
+    "precision": 80,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 5
+  },
+  "latigo_cepa": {
+    "nombre": "Látigo Cepa",
+    "tipo": "planta",
+    "categoria": "fisico",
+    "poder": 45,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 25
+  },
+  "somnifero": {
+    "nombre": "Somnífero",
+    "tipo": "planta",
+    "categoria": "estado",
+    "poder": null,
+    "precision": 75,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "sueno",
+        "prob": 1.0
+      }
+    ],
+    "pp": 15
+  },
+  "sintesis": {
+    "nombre": "Síntesis",
+    "tipo": "planta",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "cura",
+        "fraccion": 0.5
+      }
+    ],
+    "pp": 5
+  },
+  "hoja_aguda": {
+    "nombre": "Hoja Aguda",
+    "tipo": "planta",
+    "categoria": "fisico",
+    "poder": 90,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": true,
+    "efectos": [],
+    "pp": 15
+  },
+  "gigadrenado": {
+    "nombre": "Gigadrenado",
+    "tipo": "planta",
+    "categoria": "especial",
+    "poder": 75,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "drenaje",
+        "fraccion": 0.5
+      }
+    ],
+    "pp": 10
+  },
+  "ataque_rapido": {
+    "nombre": "Ataque Rápido",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "poder": 40,
+    "precision": 100,
+    "prioridad": 1,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 30
+  },
+  "rayo": {
+    "nombre": "Rayo",
+    "tipo": "electrico",
+    "categoria": "especial",
+    "poder": 90,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "paralisis",
+        "prob": 0.1
+      }
+    ],
+    "pp": 15
+  },
+  "trueno": {
+    "nombre": "Trueno",
+    "tipo": "electrico",
+    "categoria": "especial",
+    "poder": 110,
+    "precision": 70,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "paralisis",
+        "prob": 0.3
+      }
+    ],
+    "pp": 10
+  },
+  "onda_trueno": {
+    "nombre": "Onda Trueno",
+    "tipo": "electrico",
+    "categoria": "estado",
+    "poder": null,
+    "precision": 90,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "paralisis",
+        "prob": 1.0
+      }
+    ],
+    "pp": 20
+  },
+  "respiro": {
+    "nombre": "Respiro",
+    "tipo": "volador",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "cura",
+        "fraccion": 0.5
+      }
+    ],
+    "pp": 10
+  },
+  "bofeton_lodo": {
+    "nombre": "Bofetón Lodo",
+    "tipo": "tierra",
+    "categoria": "especial",
+    "poder": 20,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "rival",
+        "stat": "precision",
+        "etapas": -1,
+        "prob": 1.0
+      }
+    ],
+    "pp": 10
+  },
+  "tajo": {
+    "nombre": "Tajo",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "poder": 70,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": true,
+    "efectos": [],
+    "pp": 20
+  },
+  "ataque_arena": {
+    "nombre": "Ataque Arena",
+    "tipo": "tierra",
+    "categoria": "estado",
+    "poder": null,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "rival",
+        "stat": "precision",
+        "etapas": -1,
+        "prob": 1.0
+      }
+    ],
+    "pp": 15
+  },
+  "tornado": {
+    "nombre": "Tornado",
+    "tipo": "volador",
+    "categoria": "especial",
+    "poder": 40,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 35
+  },
+  "ventisca": {
+    "nombre": "Ventisca",
+    "tipo": "hielo",
+    "categoria": "especial",
+    "poder": 110,
+    "precision": 70,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "congelado",
+        "prob": 0.1
+      }
+    ],
+    "pp": 5
+  },
+  "golpe_cuerpo": {
+    "nombre": "Golpe Cuerpo",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "poder": 85,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "paralisis",
+        "prob": 0.3
+      }
+    ],
+    "pp": 15
+  },
+  "puno_hielo": {
+    "nombre": "Puño Hielo",
+    "tipo": "hielo",
+    "categoria": "fisico",
+    "poder": 75,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "congelado",
+        "prob": 0.1
+      }
+    ],
+    "pp": 15
+  },
+  "bola_sombra": {
+    "nombre": "Bola Sombra",
+    "tipo": "fantasma",
+    "categoria": "especial",
+    "poder": 80,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "rival",
+        "stat": "def_esp",
+        "etapas": -1,
+        "prob": 0.2
+      }
+    ],
+    "pp": 15
+  },
+  "psiquico": {
+    "nombre": "Psíquico",
+    "tipo": "psiquico",
+    "categoria": "especial",
+    "poder": 90,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "rival",
+        "stat": "def_esp",
+        "etapas": -1,
+        "prob": 0.1
+      }
+    ],
+    "pp": 10
+  },
+  "hipnosis": {
+    "nombre": "Hipnosis",
+    "tipo": "psiquico",
+    "categoria": "estado",
+    "poder": null,
+    "precision": 60,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "sueno",
+        "prob": 1.0
+      }
+    ],
+    "pp": 20
+  },
+  "paz_mental": {
+    "nombre": "Paz Mental",
+    "tipo": "psiquico",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "atq_esp",
+        "etapas": 1,
+        "prob": 1.0
+      },
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "def_esp",
+        "etapas": 1,
+        "prob": 1.0
+      }
+    ],
+    "pp": 20
+  },
+  "roca_afilada": {
+    "nombre": "Roca Afilada",
+    "tipo": "roca",
+    "categoria": "fisico",
+    "poder": 100,
+    "precision": 80,
+    "prioridad": 0,
+    "alto_critico": true,
+    "efectos": [],
+    "pp": 5
+  },
+  "rizo_defensa": {
+    "nombre": "Rizo Defensa",
+    "tipo": "normal",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "defensa",
+        "etapas": 1,
+        "prob": 1.0
+      }
+    ],
+    "pp": 40
+  },
+  "puno_fuego": {
+    "nombre": "Puño Fuego",
+    "tipo": "fuego",
+    "categoria": "fisico",
+    "poder": 75,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "quemadura",
+        "prob": 0.1
+      }
+    ],
+    "pp": 15
+  },
+  "llamarada": {
+    "nombre": "Llamarada",
+    "tipo": "fuego",
+    "categoria": "especial",
+    "poder": 110,
+    "precision": 85,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "quemadura",
+        "prob": 0.1
+      }
+    ],
+    "pp": 5
+  },
+  "canto": {
+    "nombre": "Canto",
+    "tipo": "normal",
+    "categoria": "estado",
+    "poder": null,
+    "precision": 55,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "estado",
+        "estado": "sueno",
+        "prob": 1.0
+      }
+    ],
+    "pp": 15
+  },
+  "pulso_dragon": {
+    "nombre": "Pulso Dragón",
+    "tipo": "dragon",
+    "categoria": "especial",
+    "poder": 85,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 10
+  },
+  "garra_dragon": {
+    "nombre": "Garra Dragón",
+    "tipo": "dragon",
+    "categoria": "fisico",
+    "poder": 80,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 15
+  },
+  "danza_dragon": {
+    "nombre": "Danza Dragón",
+    "tipo": "dragon",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "ataque",
+        "etapas": 1,
+        "prob": 1.0
+      },
+      {
+        "tipo": "stat",
+        "objetivo": "propio",
+        "stat": "velocidad",
+        "etapas": 1,
+        "prob": 1.0
+      }
+    ],
+    "pp": 20
+  },
+  "recuperacion": {
+    "nombre": "Recuperación",
+    "tipo": "psiquico",
+    "categoria": "estado",
+    "poder": null,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "cura",
+        "fraccion": 0.5
+      }
+    ],
+    "pp": 5
+  },
+  "mordisco": {
+    "nombre": "Mordisco",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "poder": 60,
+    "precision": 100,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [],
+    "pp": 25
+  },
+  "forcejeo": {
+    "nombre": "Forcejeo",
+    "tipo": "normal",
+    "categoria": "fisico",
+    "poder": 50,
+    "precision": null,
+    "prioridad": 0,
+    "alto_critico": false,
+    "efectos": [
+      {
+        "tipo": "retroceso_max",
+        "fraccion": 0.25
+      }
+    ],
+    "pp": null
+  }
+}

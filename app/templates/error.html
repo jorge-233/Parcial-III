@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titulo %}Error {{ codigo }} · PokéBattle{% endblock %}
+{% block contenido %}
+<div class="error-caja panel-base">
+  <p class="codigo">{{ codigo }}</p>
+  {% if combate_perdido %}
+    <h2>Este combate ya no existe</h2>
+    <p>{{ mensaje }} Puede que el servidor se haya reiniciado: los combates se guardan en memoria y se pierden al reiniciarlo.</p>
+  {% else %}
+    <h2>¡Ups! Algo no salió bien</h2>
+    <p>{{ mensaje }}</p>
+  {% endif %}
+  <div class="acciones">
+    {% if volver %}<a class="btn" href="{{ volver }}">Volver al combate</a>{% endif %}
+    <a class="btn {{ 'secundario' if volver }}" href="/">Empezar otro combate</a>
+  </div>
+</div>
+{% endblock %}
